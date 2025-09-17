@@ -30,21 +30,34 @@ const Dashboard = () => {
     { name: "Page 7", uv: 400, pv: 2400, amt: 2400 },
   ]);
 
-  setInterval(() => {
-    let uvValue: number = Math.floor(Math.random() * 600) + 100;
+  React.useEffect(() => {
     let count = data.length + 1;
-    setData([...data, { name: `Page ${count}`, uv: uvValue, pv: 2400, amt: 2400 }]);
-    count ++;
-  }, 3000);
+    setInterval(() => {
+      setData((prev) => {
+        const uvValue = Math.floor(Math.random() * 600);
+        const updated = [
+          ...prev,
+          { name: `Page ${count}`, uv: uvValue, pv: 2400, amt: 2400 },
+        ];
+        return updated.slice(-7);
+      });
+      count++;
+    }, 3000);
+  }, [data]);
 
   return (
-    <div className="bg-red-500">
+    <div className="">
       <h1 className="font-bold">Dashboard</h1>
       <LineChart width={600} height={300} data={data}>
         {/* <CartesianGrid /> */}
         <XAxis dataKey="name" />
         <YAxis />
-        <Line dataKey={"uv"} type={"monotone"} stroke="purple" strokeWidth={2} />
+        <Line
+          dataKey={"uv"}
+          type={"monotone"}
+          stroke="purple"
+          strokeWidth={2}
+        />
       </LineChart>
     </div>
   );
