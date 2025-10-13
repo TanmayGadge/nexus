@@ -1,6 +1,6 @@
 import { Car } from "lucide-react";
 import React from "react";
-
+import getUser from '../../hooks/getUser'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
 
 interface data {
@@ -45,6 +45,12 @@ const Dashboard = () => {
     }, 3000);
   }, [data]);
 
+  const [userDetails, setUserDetails] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    getUser(1).then((user) => setUserDetails(user));
+  }, []);
+
   return (
     <div className="">
       <h1 className="font-bold">Dashboard</h1>
@@ -59,6 +65,9 @@ const Dashboard = () => {
           strokeWidth={2}
         />
       </LineChart>
+      <div className="">
+        {userDetails ? JSON.stringify(userDetails) : "Loading user..."}
+      </div>
     </div>
   );
 };
