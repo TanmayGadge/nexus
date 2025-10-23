@@ -30,6 +30,7 @@ const Dashboard = () => {
     { name: "Page 7", uv: 400, pv: 2400, amt: 2400 },
   ]);
 
+  // Example simulation
   React.useEffect(() => {
     let count = data.length + 1;
     setInterval(() => {
