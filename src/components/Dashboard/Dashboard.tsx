@@ -1,7 +1,8 @@
-import { Car } from "lucide-react";
-import React from "react";
-import getUser from '../../hooks/getUser'
+import React, { useEffect } from "react";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
+import { useDatabase } from "@/context/Context";
+import ConnectButton from "../Buttons/ConnectButton";
+import DatabaseMenu from "./DatabaseMenu";
 
 interface data {
   name: string;
@@ -11,15 +12,6 @@ interface data {
 }
 
 const Dashboard = () => {
-  // const data = [
-  //   { name: "Page A", uv: 400, pv: 2400, amt: 2400 },
-  //   { name: "Page B", uv: 350, pv: 2400, amt: 2400 },
-  //   { name: "Page A", uv: 200, pv: 2400, amt: 2400 },
-  //   { name: "Page A", uv: 425, pv: 2400, amt: 2400 },
-  //   { name: "Page A", uv: 450, pv: 2400, amt: 2400 },
-  //   { name: "Page A", uv: 300, pv: 2400, amt: 2400 },
-  //   { name: "Page A", uv: 400, pv: 2400, amt: 2400 }
-  // ];
   const [data, setData] = React.useState<data[]>([
     { name: "Page 1", uv: 400, pv: 2400, amt: 2400 },
     { name: "Page 2", uv: 350, pv: 2400, amt: 2400 },
@@ -46,17 +38,39 @@ const Dashboard = () => {
     }, 3000);
   }, [data]);
 
-  const [userDetails, setUserDetails] = React.useState<any>(null);
-
-  React.useEffect(() => {
-    getUser(1).then((user) => setUserDetails(user));
-  }, []);
+  const { connectionUrl, setConnectionUrl, connected, dbConnection, value } =
+    useDatabase() as any;
 
   return (
     <div className="">
       <h1 className="font-bold">Dashboard</h1>
-      <LineChart width={600} height={300} data={data}>
-        {/* <CartesianGrid /> */}
+      <div className="my-4">
+        <h2 className="text-lg font-semibold">Connect to a Database</h2>
+        <div className="flex flex-col space-y-2">
+          <DatabaseMenu />
+
+          {value && (
+            <div className="flex items-center space-x-2">
+              <input
+                type="text"
+                value={connectionUrl}
+                onChange={(e) => setConnectionUrl(e.target.value)}
+                placeholder="Enter connection URL..."
+                className="flex-1 p-2 border rounded"
+              />
+              <ConnectButton />
+            </div>
+          )}
+        </div>
+        {connected && dbConnection && (
+          <div className="mt-2 p-3 bg-green-50 border border-green-200 rounded">
+            <p className="font-semibold">Connected to {dbConnection.name}</p>
+            <p className="text-sm text-gray-600">URL: {dbConnection.url}</p>
+          </div>
+        )}
+      </div>
+      {/* <LineChart width={600} height={300} data={data}>
+        <CartesianGrid />
         <XAxis dataKey="name" />
         <YAxis />
         <Line
@@ -65,10 +79,7 @@ const Dashboard = () => {
           stroke="purple"
           strokeWidth={2}
         />
-      </LineChart>
-      <div className="">
-        {userDetails ? JSON.stringify(userDetails) : "Loading user..."}
-      </div>
+      </LineChart> */}
     </div>
   );
 };
