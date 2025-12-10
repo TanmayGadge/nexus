@@ -15,7 +15,7 @@ export const DatabaseProvider = ({
 }) => {
   const [userDetails, setUserDetails] = useState<any>(null);
   const [selectedDatabase, setSelectedDatabase] = useState<string>("");
-  const [connectionUrl, setConnectionUrl] = useState<string>("");
+  const [connectionUrl, setConnectionUrl] = useState<string>("postgresql+psycopg2://postgres:TanmayGadge2005@localhost:5432/nexus");
   const [connected, setConnected] = useState<boolean>(false);
   const [dbConnection, setDbConnection] = useState<{
     name: string;

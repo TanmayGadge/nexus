@@ -55,7 +55,7 @@ const Dashboard = () => {
                 type="text"
                 value={connectionUrl}
                 onChange={(e) => setConnectionUrl(e.target.value)}
-                placeholder="Enter connection URL..."
+                // placeholder="Enter connection URL..."
                 className="flex-1 p-2 border rounded"
               />
               <ConnectButton />
